@@ -2,8 +2,8 @@ from Environments.ticTacToeBoard import TicTacToeBoard
 from Agents.player import Player
 
 board = TicTacToeBoard()
-ai_player = Player(board, "X")
-ai_player2 = Player(board, "O")
+ai_player = Player(board, "X", "O")
+ai_player2 = Player(board, "O", "X")
 
 for x in range(4):
     ai_player.move()

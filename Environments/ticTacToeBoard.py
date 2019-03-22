@@ -4,6 +4,7 @@ class TicTacToeBoard:
         self.width = 3
         board = []
 
+        # this is kinda stupid b/cits Y, X cords, to incrase Y by 1 to go down a row
         for row in range(self.height):
             board.append([])
             for col in range(self.width):
@@ -42,8 +43,8 @@ class TicTacToeBoard:
             if c == row_val:
                 return True
 
-        if None not in [self.board[0][0], self.board[1][1], self.board[2][2]]:
-            row_val = "".join([self.board[2][2], self.board[1][1], self.board[2][0]])
+        if None not in [self.board[0][2], self.board[1][1], self.board[2][0]]:
+            row_val = "".join([self.board[0][2], self.board[1][1], self.board[2][0]])
             if c == row_val:
                 return True
 
