@@ -15,6 +15,7 @@ class TicTacToeBoard:
     def get_state(self):
         return self.board
 
+    # Cord 1 is row, cord2 is column
     def insert(self, mark, cord1, cord2):
         if self.board[cord1][cord2] is None:
             self.board[cord1][cord2] = mark
@@ -58,6 +59,18 @@ class TicTacToeBoard:
         rows.append([self.board[0][2], self.board[1][1], self.board[2][0]])
 
         return rows
+
+    # used to get states idenfity states.
+    # @todo - may be ablet o delete this is no reason to store duplicated states.
+    def get_state_id(self):
+        id = ""
+        for row in range(self.height):
+            for col in range(self.width):
+                id += "+" if self.board[row][col] is None else self.board[row][col]
+        return id
+
+    def get_state(self):
+        return self
 
     def print_state(self):
         for row in range(self.height):
