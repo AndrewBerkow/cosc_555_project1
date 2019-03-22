@@ -23,32 +23,41 @@ class TicTacToeBoard:
 
     def check_winner(self, mark):
         c = "".join([mark, mark, mark])
-        # Check for across wins
-        for row in range(self.height):
-            if None not in [self.board[row][0], self.board[row][1], self.board[row][2]]:
-                row_val = "".join([self.board[row][0], self.board[row][1], self.board[row][2]])
-                if  c == row_val:
-                    return True
+        rows = self.get_all_winning_rows()
 
-        # Check for vertical wins
-        for col in range(self.width):
-            if None not in [self.board[0][col], self.board[1][col], self.board[2][col]]:
-                row_val = "".join([self.board[0][col], self.board[1][col], self.board[2][col]])
+        for row in rows:
+            if None not in row:
+                row_val = "".join(row)
                 if c == row_val:
                     return True
 
-        # Check for diagonal wins
-        if None not in [self.board[0][0], self.board[1][1], self.board[2][2]]:
-            row_val = "".join([self.board[0][0], self.board[1][1], self.board[2][2]])
-            if c == row_val:
-                return True
-
-        if None not in [self.board[0][2], self.board[1][1], self.board[2][0]]:
-            row_val = "".join([self.board[0][2], self.board[1][1], self.board[2][0]])
-            if c == row_val:
-                return True
-
         return False
+
+    def get_empty_positions(self):
+        # list of lists in [row, col] format
+        empty_positions = []
+        for row in range(self.height):
+            for col in range(self.width):
+                if self.board[row][col] is None:
+                    empty_positions.append([row, col])
+        return empty_positions
+
+    def get_all_winning_rows(self):
+        rows = []
+
+        # Append for across wins
+        for row in range(self.height):
+            rows.append([self.board[row][0], self.board[row][1], self.board[row][2]])
+
+        # Append for vertical wins
+        for col in range(self.width):
+            rows.append([self.board[0][col], self.board[1][col], self.board[2][col]])
+
+        # Append for diagonal wins
+        rows.append([self.board[0][0], self.board[1][1], self.board[2][2]])
+        rows.append([self.board[0][2], self.board[1][1], self.board[2][0]])
+
+        return rows
 
     def print_state(self):
         for row in range(self.height):
