@@ -35,10 +35,7 @@ class Player:
             state_after_action.insert(self.mark, action[0], action[1])
             action[2] = self.min_value(state_after_action)
 
-        print("possible actions for this move")
-        print(*possible_actions)
-
-        return min(possible_actions, key=lambda action: action[2])
+        return max(possible_actions, key=lambda action: action[2])
 
     # return a utility vale
     def max_value(self, state):
@@ -54,10 +51,7 @@ class Player:
             state_after_action.insert(self.mark, action[0], action[1])
             action[2] = self.min_value(state_after_action)
 
-        print("in max value function")
-        print(*possible_actions)
-
-        return max(possible_actions, key=lambda action: action[2])
+        return max(possible_actions, key=lambda action: action[2])[2]
 
     # return a utility vale
     def min_value(self, state):
@@ -76,7 +70,7 @@ class Player:
         print("in min value function")
         print(*possible_actions)
 
-        return min(possible_actions, key=lambda action: action[2])
+        return min(possible_actions, key=lambda action: action[2])[2]
 
 
     def terminal_test(self, state):

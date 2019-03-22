@@ -19,6 +19,7 @@ class TicTacToeBoard:
     def insert(self, mark, cord1, cord2):
         if self.board[cord1][cord2] is None:
             self.board[cord1][cord2] = mark
+            self.last_move = [cord1, cord2]
             return True
         return False
 
