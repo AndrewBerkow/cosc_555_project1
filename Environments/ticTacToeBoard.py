@@ -14,20 +14,14 @@ class TicTacToeBoard:
     def get_state(self):
         return self.board
 
-    def insert(self, cord1, cord2):
+    def insert(self, mark, cord1, cord2):
         if self.board[cord1][cord2] is None:
-            self.board[cord1][cord2] = "X"
+            self.board[cord1][cord2] = mark
             return True
         return False
 
-    def insert(self, cord1, cord2):
-        if self.board[cord1][cord2] is None:
-            self.board[cord1][cord2] = "O"
-            return True
-        return False
-
-    def check_winner(self, player_x = True):
-        c = "XXX" if player_x else "OOO"
+    def check_winner(self, mark):
+        c = "".join([mark, mark, mark])
         # Check for across wins
         for row in range(self.height):
             if None not in [self.board[row][0], self.board[row][1], self.board[row][2]]:
@@ -62,14 +56,3 @@ class TicTacToeBoard:
                 val = ' ' if self.board[row][col] is None else self.board[row][col]
                 row_string = row_string + val + "|"
             print (row_string)
-
-
-board = TicTacToeBoard()
-board.insert_x(0,0)
-board.insert_o(0,1)
-board.print_state()
-board.insert_x(1, 0)
-board.insert_x(2,0)
-board.print_state()
-
-print(board.check_winner())
