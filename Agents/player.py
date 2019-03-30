@@ -13,16 +13,22 @@ class Player:
         self.mark = "X"
         self.rival_mark = "O"
         self.environment = environment
+        self.log_mode = False
 
     def __init__(self, environment, mark, rival_mark):
         self.mark = mark
         self.rival_mark = rival_mark
         self.environment = environment
+        self.log_mode = False
 
     def move(self):
-        action = self.min_max_decision(self.environment)
-        self.environment.insert(self.mark, action[0], action[1])
-        # self.random_move()
+        # action = self.min_max_decision(self.environment)
+        # self.environment.insert(self.mark, action[0], action[1])
+        self.random_move()
+        self.log_mode = False
+
+    def set_log_mode(self, mode):
+        self.log_mode = mode
 
     #returns an action
     '''
@@ -84,15 +90,17 @@ class Player:
             state_after_action.insert(self.rival_mark, action[0], action[1])
             action[2] = self.max_value(state_after_action)
 
-        print("in min value function")
-        print(*possible_actions)
+        if self.log_mode:
+            print("in min value function")
+            print(*possible_actions)
 
         return min(possible_actions, key=lambda action: action[2])[2]
 
 
     def terminal_test(self, state):
-        print("terminal test for")
-        state.print_state()
+        if self.log_mode:
+            print("terminal test for")
+            state.print_state()
         return len(state.get_empty_positions()) == 0 or state.check_winner(self.mark) or state.check_winner(self.rival_mark)
 
 
@@ -121,7 +129,7 @@ class Player:
         rival_marked_three = "".join([self.rival_mark, self.rival_mark, self.rival_mark])
         rival_marked_two = "".join([self.rival_mark, self.rival_mark])
         '''
-        evaluation function source https://www.ntu.edu.sg/home/ehchua/programming/java/JavaGame_TicTacToe_AI.html
+        Evaluation function source https://www.ntu.edu.sg/home/ehchua/programming/java/JavaGame_TicTacToe_AI.html
         +100 for EACH 3-in-a-line for computer.
         +10 for EACH 2-in-a-line (with a empty cell) for computer.
         +1 for EACH 1-in-a-line (with two empty cells) for computer.
