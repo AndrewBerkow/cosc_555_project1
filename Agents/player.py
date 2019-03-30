@@ -25,6 +25,23 @@ class Player:
         # self.random_move()
 
     #returns an action
+    '''
+    next steps, need to generalize this and make it just action-pair value and have it not care about the cords or mark. 
+    The possible actions array should detrmine rival vs your mark. 
+    
+    Than need alpha beta purnning
+    
+    Probably want an interface.
+    
+    In postmatorum write the hardest part was generalizing it. Improve to python standards. 
+    
+    Make an interface and parent class that is extended 3 times. Once just min max, 
+    once AB pruning and once that keeps a hash of all states so no need to re compute values and go down these trees. 
+
+    Do UI. 
+    
+    If I really get time than make it 5x5 or 7x7 and record times.
+    '''
     def min_max_decision(self, state):
 
         possible_actions = self.get_possible_actions(state)
