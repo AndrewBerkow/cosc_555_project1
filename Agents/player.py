@@ -51,7 +51,9 @@ class Player(AlphaBetaAgent):
     If I really get time than make it 5x5 or 7x7 and record times.
     '''
     def min_max_decision(self, state):
-
+        # |1000| is higher than any possible utility value so this is as good as infinity for our purposes.
+        alpha = -1000
+        beta = 1000
         possible_actions = self.get_possible_actions(state)
 
         # See what the state is after each action is done and pass into max_value function
@@ -60,9 +62,9 @@ class Player(AlphaBetaAgent):
             state_after_action.insert(self.mark, action[0], action[1])
             # @todo - need to determine if min / max value here and in the return will change depending on who goes first.
             if self.goes_first:
-                action[2] = self.max_value(state_after_action)
+                action[2] = self.max_value(state_after_action, alpha, beta)
             else:
-                action[2] = self.min_value(state_after_action)
+                action[2] = self.min_value(state_after_action, alpha, beta)
 
         if self.goes_first:
             best_action = min(possible_actions, key=lambda action: action[2])
@@ -72,45 +74,63 @@ class Player(AlphaBetaAgent):
         return best_action
 
     # return a utility vale
-    def max_value(self, state):
+    def max_value(self, state, alpha, beta):
 
         if self.terminal_test(state):
             return self.evaluate_state(state)
 
         possible_actions = self.get_possible_actions(state)
-
+        v = -1000
         # See what the state is after each action is done and pass into min_value function
         for action in possible_actions:
             state_after_action = deepcopy(state)
             state_after_action.insert(self.mark, action[0], action[1])
-            action[2] = self.min_value(state_after_action)
+            # action[2] is utility
+            action[2] = self.min_value(state_after_action, alpha, beta)
+            v = max(v, action[2])
+            # alpha = max(alpha, action[2])
+            # if alpha >= beta:
+            #     return action[2]
+            if v >= beta:
+                return v
+            alpha = max(alpha, v)
 
         if self.log_mode:
             print("in max value function")
             print(*possible_actions)
 
-        return max(possible_actions, key=lambda action: action[2])[2]
+        # return max(possible_actions, key=lambda action: action[2])[2]
+        return v
 
     # return a utility vale
-    def min_value(self, state):
+    def min_value(self, state, alpha, beta):
 
         if self.terminal_test(state):
             return self.evaluate_state(state)
 
         possible_actions = self.get_possible_actions(state)
-
+        v = 1000
         # See what the state is after each action is done and pass into min_value function
         for action in possible_actions:
             state_after_action = deepcopy(state)
             state_after_action.insert(self.rival_mark, action[0], action[1])
-            action[2] = self.max_value(state_after_action)
+            # action[2] is utility
+            action[2] = self.max_value(state_after_action, alpha, beta)
+            v = min(v, action[2])
+            # beta = min(alpha, action[2])
+            # if alpha >= beta:
+            #     return action[2]
+            if v <= alpha:
+                return action[2]
+            beta = min(beta, v)
+
 
         if self.log_mode:
             print("in min value function")
             print(*possible_actions)
 
-        return min(possible_actions, key=lambda action: action[2])[2]
-
+        # return min(possible_actions, key=lambda action: action[2])[2]
+        return v
 
     def terminal_test(self, state):
         if self.log_mode:

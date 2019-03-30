@@ -17,19 +17,23 @@ class AlphaBetaAgent:
         raise NotImplementedError
 
     @abstractmethod
-    def max_value(self, state):
+    def max_value(self, state, alpha, beta):
         """
         Perform max value step of the min max algorithm
         :param state: An object that represents a state of an environment
+        :param alpha: Highest value found so far, used for book keeping
+        :param beta: Lowest value found so far, used for book keeping
         :return utility_value: The utility value of the action with the max utility value according to evaluate_state()
         """
         raise NotImplementedError
 
     @abstractmethod
-    def min_value(self, state):
+    def min_value(self, state, alpha, beta):
         """
         Perform min value step of the min max algorithm
         :param state: An object that represents a state of an environment
+        :param alpha: Highest value found so far, used for book keeping
+        :param beta: Lowest value found so far, used for book keeping
         :return utility_value: The utility value of the action with the min utility value according to evaluate_state()
         """
         raise NotImplementedError
