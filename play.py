@@ -6,9 +6,10 @@ import time
 # Init AI agent and board.
 human_players_mark = "O"
 ai_players_mark = "X"
+ai_goes_first = True #todo - could make this a param.
 
 board = TicTacToeBoard()
-ai_player = Player(board, ai_players_mark, human_players_mark)
+ai_player = Player(board, ai_players_mark, human_players_mark, ai_goes_first)
 # ai_player2 = Player(board, "O", "X")
 
 # AI player will go first

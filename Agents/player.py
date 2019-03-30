@@ -10,16 +10,18 @@ Sensors: Game is fully observable and the play can get access to the state at an
 '''
 
 class Player(AlphaBetaAgent):
-    def __init__(self, environment):
+    def __init__(self, environment, goes_first):
         self.mark = "X"
         self.rival_mark = "O"
         self.environment = environment
+        self.goes_first = goes_first
         self.log_mode = False
 
-    def __init__(self, environment, mark, rival_mark):
+    def __init__(self, environment, mark, rival_mark, goes_first):
         self.mark = mark
         self.rival_mark = rival_mark
         self.environment = environment
+        self.goes_first = goes_first
         self.log_mode = False
 
     def move(self):
@@ -57,9 +59,17 @@ class Player(AlphaBetaAgent):
             state_after_action = deepcopy(state)
             state_after_action.insert(self.mark, action[0], action[1])
             # @todo - need to determine if min / max value here and in the return will change depending on who goes first.
-            action[2] = self.min_value(state_after_action)
+            if self.goes_first:
+                action[2] = self.max_value(state_after_action)
+            else:
+                action[2] = self.min_value(state_after_action)
 
-        return max(possible_actions, key=lambda action: action[2])
+        if self.goes_first:
+            best_action = min(possible_actions, key=lambda action: action[2])
+        else:
+            best_action = max(possible_actions, key=lambda action: action[2])
+
+        return best_action
 
     # return a utility vale
     def max_value(self, state):
@@ -74,6 +84,10 @@ class Player(AlphaBetaAgent):
             state_after_action = deepcopy(state)
             state_after_action.insert(self.mark, action[0], action[1])
             action[2] = self.min_value(state_after_action)
+
+        if self.log_mode:
+            print("in max value function")
+            print(*possible_actions)
 
         return max(possible_actions, key=lambda action: action[2])[2]
 
@@ -116,6 +130,7 @@ class Player(AlphaBetaAgent):
 
     ## EVALUATION STUFF
     # this may get moved to a different object, also should renaem evaluation function.
+    # This utility function stinks because it does not block the other players moves.
     def evaluate_state(self, state):
         utility = 0
         winning_rows = state.get_all_winning_rows()
