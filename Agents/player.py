@@ -22,10 +22,9 @@ class Player:
         self.log_mode = False
 
     def move(self):
-        # action = self.min_max_decision(self.environment)
-        # self.environment.insert(self.mark, action[0], action[1])
-        self.random_move()
-        self.log_mode = False
+        action = self.min_max_decision(self.environment)
+        self.environment.insert(self.mark, action[0], action[1])
+        #self.random_move()
 
     def set_log_mode(self, mode):
         self.log_mode = mode

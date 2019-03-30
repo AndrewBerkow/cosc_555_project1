@@ -44,6 +44,9 @@ class TicTacToeBoard:
                     empty_positions.append([row, col])
         return empty_positions
 
+    def is_board_full(self):
+        return len(self.get_empty_positions()) == 0
+
     def get_all_winning_rows(self):
         rows = []
 

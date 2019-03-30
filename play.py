@@ -1,6 +1,7 @@
 from Environments.ticTacToeBoard import TicTacToeBoard
 from Agents.player import Player
 from copy import deepcopy #@todo - can get rid of, don't need in this file.
+import time
 
 # Init AI agent and board.
 human_players_mark = "O"
@@ -11,7 +12,14 @@ ai_player = Player(board, ai_players_mark, human_players_mark)
 # ai_player2 = Player(board, "O", "X")
 
 # AI player will go first
-ai_player.move()
+print("AI player taking turn....")
+start_time = time.clock()
+# For speed/ testing sake lets just set the first AI move to the middle square, set back to real later.
+board.insert(ai_players_mark, 1, 1)
+# ai_player.move()
+print ("AI players turn took ", time.clock() - start_time, "seconds")
+print("AI player has made there turn. Current board:")
+board.print_state()
 # board.print_state()
 
 playing = True
@@ -32,6 +40,7 @@ input_to_cords_dict = {
     "8": [2, 1],
     "9": [2, 2],
 }
+# @todo - directions, ? logic and better validation
 
 
 while playing:
@@ -42,44 +51,61 @@ while playing:
         if user_input not in valid_input:
             print(user_input + " is not a valid input")
 
-        if user_input.lower() == "exit":
-            playing = False
-
-        elif user_input.lower() in ["p", "print"]:
-            board.print_state()
-
-        elif user_input == "?":
-            print(directions)
-
         else:
-            board_cords = input_to_cords_dict[user_input]
-            # mark players move on board, if illegal move notify user and let them try again.
-            legal_move_made = board.insert(human_players_mark, board_cords[0], board_cords[1])
-            # set to AI players turn turn
-            if legal_move_made:
 
-                human_player_won = board.check_winner(human_players_mark)
-                if human_player_won:
-                    print ("Congratulations! You won!")
-                    playing = False
-                    break
+            if user_input.lower() == "exit":
+                playing = False
 
-                human_players_turn = False
-                print("AI player taking turn....")
-                ai_player.move()
-                print("AI player has made there turn. Current board:")
+            elif user_input.lower() in ["p", "print"]:
                 board.print_state()
 
-                ai_player_won = board.check_winner(ai_players_mark)
-                if ai_player_won:
-                    print ("The AI player has won, try again.")
-                    playing = False
-                    break
+            elif user_input == "?":
+                print(directions)
 
-                human_players_turn = True
             else:
-                print(user_input + " is not an empty space on the board, try again on an empty space.")
-                board.print_state()
+                board_cords = input_to_cords_dict[user_input]
+                # mark players move on board, if illegal move notify user and let them try again.
+                legal_move_made = board.insert(human_players_mark, board_cords[0], board_cords[1])
+                # set to AI players turn turn
+                if legal_move_made:
+
+                    print("Current board after your move:")
+                    board.print_state()
+
+                    human_player_won = board.check_winner(human_players_mark)
+                    if human_player_won:
+                        print ("Congratulations! You won!")
+                        playing = False
+                        break
+
+                    if board.is_board_full():
+                        print ("Stalemate, try again")
+                        playing = False
+                        break
+
+                    human_players_turn = False
+                    print("AI player taking turn....")
+                    start_time = time.clock()
+                    ai_player.move()
+                    print ("AI players turn took ", time.clock() - start_time, "seconds")
+                    print("AI player has made there turn. Current board:")
+                    board.print_state()
+
+                    ai_player_won = board.check_winner(ai_players_mark)
+                    if ai_player_won:
+                        print ("The AI player has won, try again.")
+                        playing = False
+                        break
+
+                    if board.is_board_full():
+                        print ("Stalemate, try again")
+                        playing = False
+                        break
+
+                    human_players_turn = True
+                else:
+                    print(user_input + " is not an empty space on the board, try again on an empty space.")
+                    board.print_state()
 
     else:
         print("AI player taking turn.... please wait before entering any commands.")
