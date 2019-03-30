@@ -1,5 +1,6 @@
 import random
 from copy import deepcopy
+from Agents.alphaBetaAgent import AlphaBetaAgent
 '''
 PEAS Description for player agent in a game of tic tac toe.
 Performance measure:
@@ -8,7 +9,7 @@ Actuators: Make move
 Sensors: Game is fully observable and the play can get access to the state at any time.
 '''
 
-class Player:
+class Player(AlphaBetaAgent):
     def __init__(self, environment):
         self.mark = "X"
         self.rival_mark = "O"
@@ -55,6 +56,7 @@ class Player:
         for action in possible_actions:
             state_after_action = deepcopy(state)
             state_after_action.insert(self.mark, action[0], action[1])
+            # @todo - need to determine if min / max value here and in the return will change depending on who goes first.
             action[2] = self.min_value(state_after_action)
 
         return max(possible_actions, key=lambda action: action[2])
