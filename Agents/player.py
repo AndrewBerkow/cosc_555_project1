@@ -61,12 +61,12 @@ class Player(AlphaBetaAgent):
             state_after_action = deepcopy(state)
             state_after_action.insert(self.mark, action[0], action[1])
             # @todo - need to determine if min / max value here and in the return will change depending on who goes first.
-            if self.goes_first:
+            if not self.goes_first:
                 action[2] = self.max_value(state_after_action, alpha, beta)
             else:
                 action[2] = self.min_value(state_after_action, alpha, beta)
 
-        if self.goes_first:
+        if not self.goes_first:
             best_action = min(possible_actions, key=lambda action: action[2])
         else:
             best_action = max(possible_actions, key=lambda action: action[2])
